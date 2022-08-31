@@ -4,9 +4,9 @@ import fastapi
 import uvicorn
 from starlette.staticfiles import StaticFiles
 
-from api import weather_api
-from services import openweather_service
-from views import home
+from app.api import weather_api
+from app.services import openweather_service
+from app.views import home
 
 api = fastapi.FastAPI()
 
@@ -17,7 +17,7 @@ def configure():
 
 
 def configure_routing():
-    api.mount('/static', StaticFiles(directory='static'), name='static')
+    api.mount('/assets/static', StaticFiles(directory='assets/static'), name='static')
     api.include_router(home.router)
     api.include_router(weather_api.router)
 
