@@ -1,5 +1,6 @@
 aiofiles
 fastapi
+fastapi-cache2
 httpx
 jinja2
 uvicorn

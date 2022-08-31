@@ -4,7 +4,6 @@ target-version = ['py39']
 skip-string-normalization = true
 
 [tool.isort]
-extend_skip = ['app/ui/forms']
 known_first_party = 'app'
 profile = 'black'
 sections = 'FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER'
