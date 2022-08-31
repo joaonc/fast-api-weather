@@ -15,6 +15,7 @@ app = fastapi.FastAPI()
 
 def configure():
     configure_routing()
+    configure_cache()
     configure_api_keys()
 
 
@@ -24,15 +25,14 @@ def configure_routing():
     app.include_router(weather_api.router)
 
 
+def configure_cache():
+    FastAPICache.init(InMemoryBackend())
+
+
 def configure_api_keys():
     with open('settings.json') as f:
         settings = json.load(f)
         openweather_service.api_key = settings.get('api_key')
-
-
-@app.on_event('startup')
-async def startup():
-    FastAPICache.init(InMemoryBackend())
 
 
 if __name__ == '__main__':
