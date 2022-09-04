@@ -1,11 +1,12 @@
-from typing import Optional
+from typing import List, Optional
 
 import fastapi
 from fastapi import Depends
 from fastapi_cache.decorator import cache
 
 from app.models.location import Location
-from app.services import openweather_service
+from app.models.report import Report, ReportSubmittal
+from app.services import openweather_service, report_service
 
 router = fastapi.APIRouter()
 
@@ -17,3 +18,13 @@ async def weather(loc: Location = Depends(), units: Optional[str] = 'metric'):
         return await openweather_service.get_report(loc.city, loc.state, loc.country, units)
     except Exception as e:
         return fastapi.responses.JSONResponse(str(e), status_code=400)
+
+
+@router.get('/api/reports', name='all_reports')
+async def reports_get() -> List[Report]:
+    return await report_service.get_reports()
+
+
+@router.post('/api/reports', name='add_report')
+async def reports_post(report_submittal: ReportSubmittal) -> Report:
+    return await report_service.add_report(report_submittal.description, report_submittal.location)
