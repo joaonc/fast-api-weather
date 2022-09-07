@@ -8,6 +8,7 @@ from app.models.location import Location
 from app.models.report import Report, ReportSubmittal
 from app.services import openweather_service, report_service
 
+# Use `docs_url=None` for no documentation in `/docs`
 router = fastapi.APIRouter()
 
 
@@ -20,11 +21,11 @@ async def weather(loc: Location = Depends(), units: Optional[str] = 'metric'):
         return fastapi.responses.JSONResponse(str(e), status_code=400)
 
 
-@router.get('/api/reports', name='all_reports')
+@router.get('/api/reports', name='all_reports', response_model=List[Report])
 async def reports_get() -> List[Report]:
     return await report_service.get_reports()
 
 
-@router.post('/api/reports', name='add_report')
+@router.post('/api/reports', name='add_report', status_code=201, response_model=Report)
 async def reports_post(report_submittal: ReportSubmittal) -> Report:
     return await report_service.add_report(report_submittal.description, report_submittal.location)
